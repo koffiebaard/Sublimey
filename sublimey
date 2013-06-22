@@ -1,0 +1,91 @@
+#!/bin/sh
+#title           :mkscript.sh
+#description     :This script launches the specified Sublime project, or if it's already open, brings it to the front
+#author          :wisc
+#date            :20130622
+#version         :0.9
+#usage           :./sublimey <project-name>
+
+
+# It can only run if a projectname is supplied
+if [ $# -eq 1 ]; then
+
+# the ST3 workspace session file is used to speed up the process; checking with Applescript is expensive
+ST3_workspaces="~/Library/Application\ Support/Sublime\ Text\ 3/Local/Auto\ Save\ Session.sublime_session"
+
+# We'll have to determine whether we have to lookup the title of the window (as a performance optimization)
+lookup_title_with_applescript=false;
+
+# Is the workspace file present? Check if we have an already-running project
+if [ -e "$ST3_workspaces" ]; then
+
+    current_workspace=`cat ~/Library/Application\ Support/Sublime\ Text\ 3/Local/Auto\ Save\ Session.sublime_session | grep '"project":' | awk '{print $2}' | sed -e 's/^"*//g' -e 's/".*$//g' | grep $1`
+
+# Only toggle the lookup when we have to; in this case, we could be running ST2
+else
+
+	lookup_title_with_applescript=true;
+
+fi
+
+# Is the workspace present in the autosave file? Toggle the Applescript lookup
+if [ -n "$current_workspace" ]; then
+
+	lookup_title_with_applescript=true;
+
+fi
+
+# Should the title bar of the project be looked up?
+if [ -n "$lookup_title_with_applescript" ]; then
+
+# Check with Applescript for the title of the project window
+WOOT=$(/usr/bin/osascript << EOF
+
+tell application "System Events" to get the title of every window of process "Sublime Text"
+
+EOF)
+
+# A comma separated string, so fix it so we can iterate
+IFS=',' read -a array <<< "$WOOT"
+
+for element in "${array[@]}"
+do
+    # sed -e 's/^ *//g' -e 's/ *$//g' $element
+
+    # Is the project name contained within the titlebar? If so, we have a winner.
+    if [[ "$element" =~ .*$1.* ]]; then
+
+        menu_item_to_click=$element;
+
+    fi
+done
+
+fi
+
+# Continue if we have determined what menu item to click (using Applescript)
+if [ -n "$menu_item_to_click" ]; then
+
+# Use Applescript to click on a menu-item of the menu Window in ST
+/usr/bin/osascript << EOF
+
+set menu_item_to_click to do shell script "echo $menu_item_to_click"
+
+tell application "Sublime Text" to activate
+tell application "System Events"
+    tell process "Sublime Text"
+        click menu item menu_item_to_click of menu 1 of menu bar item "Window" of menu bar 1
+    end tell
+end tell
+
+EOF
+
+# There is no running project, launch it
+else
+
+`subl ./$1.sublime-project`
+
+fi
+
+fi
+
+exit;
