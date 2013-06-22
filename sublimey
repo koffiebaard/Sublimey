@@ -1,5 +1,5 @@
 #!/bin/sh
-#title           :mkscript.sh
+#title           :sublimey
 #description     :This script launches the specified Sublime project, or if it's already open, brings it to the front
 #author          :wisc
 #date            :20130622
