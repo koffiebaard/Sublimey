@@ -2,8 +2,8 @@
 #title           :sublimey
 #description     :This script launches the specified Sublime project, or if it's already open, brings it to the front
 #author          :wisc
-#date            :20130622
-#version         :0.9
+#date            :20130910
+#version         :1.0
 #usage           :./sublimey <project-name>
 
 

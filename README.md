@@ -16,6 +16,10 @@ It's really easy:
 
     chmod +x sublimey
 
+- Make sure you can call "subl" from the commandline, it's the CLI command that ships with Sublime. You can symlink it like this:
+
+	sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/sbin/subl
+
 - And voila, you can use it with the following syntax:
 
     ./sublimey "project-name"
@@ -25,7 +29,9 @@ It's really easy:
 
 Alfred is a productivity tool, and we can use it to switch Sublime projects (and open the project if it's not there). Just type in the name of the project and it will do everything for you. The Alfred PowerPack is not required; if you do have PowerPack you can simply hook it up to the Sublimey script. If you don't have the PowerPack, add it to Alfred like this:
 
-- There is a .scpt file in the directory. Rename it to match the name of your project, and copy the file for every project.
+- There is a .scpt file in the directory. Place it in the same directory as your workspace files.
+
+- Rename it to match the name of your project, and copy the file for every project.
 
     e.g. "awesome.sublime-project" will need a script called "awesome.sublime.scpt"
 
@@ -35,8 +41,8 @@ Alfred is a productivity tool, and we can use it to switch Sublime projects (and
 
 - On the tab "Features", go to "Default Results". There you can specify folders to search through and filetypes to search.
 
-- Add your Sublime project folder to the Search Scope using the "+"
+- Add your Sublime project folder to the Search Scope using the "+" near the box listing the searched folders
 
-- Press the "Advanced" button on the same screen and drag one of the .scpt files in there. It will recognize the filetype and make it searchable
+- Press the "Advanced" button on the same screen and drag one of the .scpt files in there. It will recognize the filetype (Apple Script) and make it searchable
 
-- Voila, you can now open Sublime projects through Alfred by typing the name. When the project's already opened it will simply show you the window. 
+- Voila, you can now open Sublime projects through Alfred by typing the name. When the project's already opened it will simply show you the window.
