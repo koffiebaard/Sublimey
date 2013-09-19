@@ -53,7 +53,7 @@ do
     # sed -e 's/^ *//g' -e 's/ *$//g' $element
 
     # Is the project name contained within the titlebar? If so, we have a winner.
-    if [[ "$element" =~ .*$1.* ]]; then
+    if [[ "$element" =~ .*\—\ $1.* ]]; then
 
         menu_item_to_click=$element;
 
