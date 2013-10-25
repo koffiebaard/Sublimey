@@ -1,0 +1,3 @@
+[submodule "sublimey-0.9"]
+	path = sublimey-0.9
+	url = git://github.com/wisc/Sublimey.git
